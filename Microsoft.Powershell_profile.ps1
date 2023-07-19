@@ -16,7 +16,6 @@ function Build-Install-Binary {
 	cargo build --release
 	cargo install .
 }
-
 function Start-Code-Bonus {
 	$target = ".\bonus.code-workspace"
 	if (-not(Test-Path ".\bonus.code-workspace")) {
