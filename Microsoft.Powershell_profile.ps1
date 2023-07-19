@@ -8,7 +8,7 @@ New-Alias cdgit cd-git
 # PC ADDITIONS:
 Set-Variable ToolPath -Option Constant -Value "F:\Tools\CLI"
 function ToolFolder {
-	Start $ToolPath
+	Start-Process $ToolPath
 }
 function Build-Install-Binary {
 	cargo build --release
