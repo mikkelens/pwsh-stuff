@@ -9,9 +9,15 @@ Set-Variable WorkspaceBonusSamplePath -Option Constant -Value "F:\Tools\CLI\bonu
 function Open-ToolPath {
 	Start-Process $ToolPath
 }
-function Build-Install-Binary {
+function Build-Install-Binary ($specifiedPath) {
+	if ($specifiedPath) {
+		$path = $specifiedPath
+	}
+	else {
+		$path = "."
+	}
 	cargo build --release
-	cargo install .
+	cargo install $path
 }
 function Start-Code-Bonus {
 	$name = (Get-Item -Path .).BaseName
@@ -68,12 +74,12 @@ New-Alias cdgit Set-Location-Git
 New-Alias cdg Set-Location-Git
 
 # cargo shorthands
-function Invoke-Cargo-Run { cargo run }
-function Invoke-Cargo-Run-Release { cargo run --release }
+function Invoke-Cargo-Run { cargo run @args }
+function Invoke-Cargo-Run-Release { cargo run --release @args }
 function Invoke-Cargo-Build { cargo build }
-function Invoke-Cargo-Build-Release { cargo build --release }
+function Invoke-Cargo-Build-Release { cargo build --release @args }
 function Invoke-Cargo-Test { cargo test }
-function Invoke-Cargo-Test-Release { cargo test --release }
+function Invoke-Cargo-Test-Release { cargo test --release @args }
 New-Alias cr Invoke-Cargo-Run
 New-Alias crr Invoke-Cargo-Run-Release
 New-Alias cb Invoke-Cargo-Build
@@ -83,27 +89,27 @@ New-Alias ctr Invoke-Cargo-Test-Release
 
 function Clear-Run { 
 	Clear-Host
-	Invoke-Cargo-Run
+	Invoke-Cargo-Run @args
 }
 function Clear-Run-Release { 
 	Clear-Host
-	Invoke-Cargo-Run-Release
+	Invoke-Cargo-Run-Release @args
 }
 function Clear-Build {
 	Clear-Host
-	Invoke-Cargo-Build
+	Invoke-Cargo-Build @args
 }
 function Clear-Build-Release {
 	Clear-Host
-	Invoke-Cargo-Build-Release
+	Invoke-Cargo-Build-Release @args
 }
 function Clear-Test {
 	Clear-Host
-	Invoke-Cargo-Test
+	Invoke-Cargo-Test @args
 }
 function Clear-Test-Release {
 	Clear-Host
-	Invoke-Cargo-Test-Release
+	Invoke-Cargo-Test-Release @args
 }
 New-Alias clr Clear-Run
 New-Alias clrr Clear-Run-Release
