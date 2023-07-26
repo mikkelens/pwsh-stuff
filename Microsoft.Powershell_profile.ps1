@@ -117,3 +117,8 @@ New-Alias clb Clear-Build
 New-Alias clbr Clear-Build-Release
 New-Alias clt Clear-Test
 New-Alias cltr Clear-Test-Release
+
+function Start-Powershell-Window {
+	Start-Process pwsh
+}
+New-Alias sps Start-Powershell-Window
