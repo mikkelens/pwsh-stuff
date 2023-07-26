@@ -118,6 +118,14 @@ New-Alias clbr Clear-Build-Release
 New-Alias clt Clear-Test
 New-Alias cltr Clear-Test-Release
 
+Set-Variable ClippyConfig -Option Constant -Value '-Wclippy::pedantic', '-Aclippy::uninlined_format_args', '-Aclippy::wildcard_imports'
+function Fix_Clippy_With_Config {
+	cargo clippy --fix -- $ClippyConfig
+}
+function Use_Clippy_With_Config {
+	cargo clippy -- $ClippyConfig
+}
+
 function Start-Powershell-Window {
 	Start-Process pwsh
 }
