@@ -2,9 +2,9 @@
 Set-Variable OMPPath -Option Constant -Value 'C:\Users\Mikkel\Documents\PowerShell\catppuccin_frappe.omp.json'
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 
-# PC ONLY:
-Set-Variable ToolPath -Option Constant -Value 'F:\Tools\CLI'
-Set-Variable WorkspaceBonusSamplePath -Option Constant -Value 'F:\Tools\CLI\bonus.code-workspace'
+# LAPTOP ONLY:
+Set-Variable ToolPath -Option Constant -Value 'C:\Users\mikke\Desktop\cli-tools'
+Set-Variable WorkspaceBonusSamplePath -Option Constant -Value 'C:\Users\mikke\Desktop\cli-tools\bonus.code-workspace'
 
 function Open-ToolPath {
 	Start-Process $ToolPath
