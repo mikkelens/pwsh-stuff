@@ -1,7 +1,12 @@
-# LAPTOP ONLY:
+# PATH ASSIGNMENT
 Set-Variable UserPath -Option Constant -Value 'C:\Users\mikke'
-Set-Variable ToolPath -Option Constant -Value ($UserPath + '\Desktop\cli-tools')
-Set-Variable WorkspaceBonusSamplePath -Option Constant -Value ($UserPath + '\Desktop\cli-tools\bonus.code-workspace')
+Set-Variable DesktopPath -Option Constant -Value ($UserPath + '\Desktop')
+
+Set-Variable GitPath -Option Constant -Value ($DesktopPath + '\repos')
+Set-Variable RustPath -Option Constant -Value ($DesktopPath + '\rust')
+
+Set-Variable ToolPath -Option Constant -Value ($DesktopPath + '\cli-tools')
+Set-Variable WorkspaceBonusSamplePath -Option Constant -Value ($ToolPath + '\bonus.code-workspace')
 
 Set-Variable OMPPath -Option Constant -Value ($UserPath + '\Documents\PowerShell\catppuccin_frappe.omp.json')
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
@@ -9,6 +14,7 @@ oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 function Open-ToolPath {
 	Start-Process $ToolPath
 }
+New-Alias bib Build-Install-Binary
 function Build-Install-Binary ($specifiedPath) {
 	if ($specifiedPath) {
 		$path = $specifiedPath
@@ -18,6 +24,9 @@ function Build-Install-Binary ($specifiedPath) {
 	}
 	cargo build --release
 	cargo install $path
+}
+function Start-Code-New {
+	code --new-window @args
 }
 function Start-Code-Bonus {
 	$name = (Get-Item -Path .).BaseName
@@ -53,23 +62,21 @@ function Start-Code-Bonus {
 	Write-Output $succes_msg
 	code --new-window $target
 }
-function Start-Code-New {
-	code --new-window
-}
 
 # docs
 function Open-RustBook { rustup docs --book }
 New-Alias rustbook Open-RustBook
 
 # directories
-function  Set-Location-Rust { Set-Location 'F:\Git\Rust\' }
-function Set-Location-RustProjects { Set-Location 'F:\Git\Rust\rust-projects\' }
+function  Set-Location-Rust { Set-Location $RustPath }
+Set-Variable RustProjectsPath -Option Constant -Value ($RustPath + '\rust-projects')
+function Set-Location-RustProjects { Set-Location $RustProjectsPath }
 New-Alias cdrust Set-Location-Rust
 New-Alias cdr Set-Location-Rust
 New-Alias cdrustprojects Set-Location-RustProjects
 New-Alias cdrp Set-Location-RustProjects
 
-function Set-Location-Git { Set-Location 'F:\Git\' }
+function Set-Location-Git { Set-Location $GitPath }
 New-Alias cdgit Set-Location-Git
 New-Alias cdg Set-Location-Git
 
