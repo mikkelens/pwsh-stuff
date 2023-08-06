@@ -4,6 +4,7 @@
 Set-Variable OMPPath -Option Constant -Value ($UserPath + '\Documents\PowerShell\catppuccin_frappe.omp.json')
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 
+Set-Variable GlazeWMFolder -Option Constant -Value ($UserPath + '\.glaze-wm')
 function Open-CLIPath {
 	Start-Process $CLIPath
 }
