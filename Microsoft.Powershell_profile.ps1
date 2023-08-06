@@ -1,12 +1,15 @@
 # PATH ASSIGNMENT
-.\local_paths.ps1
+. .\local_paths.ps1 # 'dot scope' shell script variable scope tweak
 
 Set-Variable OMPPath -Option Constant -Value ($UserPath + '\Documents\PowerShell\catppuccin_frappe.omp.json')
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 
-function Open-ToolPath {
-	Start-Process $ToolPath
+function Open-CLIPath {
+	Start-Process $CLIPath
 }
+# function Start-GlazeWM {
+# 	Start-Process $ToolPath + '\GlazeWM_x64_1.11.1'
+# }
 New-Alias bib Build-Install-Binary
 function Build-Install-Binary ($specifiedPath) {
 	if ($specifiedPath) {
