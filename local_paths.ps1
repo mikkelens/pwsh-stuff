@@ -1,4 +1,3 @@
-Set-Variable UserPath -Option Constant -Value 'C:\Users\Mikkel'
 Set-Variable DesktopPath -Option Constant -Value ($UserPath + '\Desktop')
 
 Set-Variable ExternalDrivePath -Option Constant -Value 'F:'
