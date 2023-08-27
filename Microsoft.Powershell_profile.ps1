@@ -1,7 +1,11 @@
-. .\local_paths.ps1 # 'dot scope' shell script variable scope tweak
-. .\rust_completions.ps1
+Set-Variable PSPath -Option Constant (Split-Path $PROFILE -Parent)
 
-oh-my-posh init pwsh --config .\catppuccin_frappe.omp.json | Invoke-Expression
+# 'dot scoping' more stuff in
+. ($PSPath + '.\local_paths.ps1')
+. ($PSPath + '\rust_completions.ps1')
+
+Set-Variable OMPPath -Option Constant ($PSPath + '.\catppuccin_frappe.omp.json')
+oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 
 Set-Variable GlazeWMFolder -Option Constant -Value ($LocalUserPath + '\.glaze-wm')
 function Open-CLIPath {
