@@ -1,11 +1,20 @@
 # PATH ASSIGNMENT
+Set-Variable UserPath -Option Constant -Value 'C:\Users\Mikkel'
 . .\local_paths.ps1 # 'dot scope' shell script variable scope tweak
 
-Set-Variable OMPPath -Option Constant -Value ($UserPath + '\Documents\PowerShell\catppuccin_frappe.omp.json')
+Set-Variable PSPath -Option Constant -Value ($UserPath + '\Documents\PowerShell')
+Set-Variable OMPPath -Option Constant -Value ($PSPath + '\catppuccin_frappe.omp.json')
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 
+. ($PSPath + '\local_paths.ps1') # 'dot scope' shell script variable scope tweak
+. ($PSPath + '\rust_completions.ps1')
+
+Set-Variable GlazeWMFolder -Option Constant -Value ($UserPath + '\.glaze-wm')
 function Open-CLIPath {
 	Start-Process $CLIPath
+}
+function Start-GlazeWM {
+	Start-Process ($ToolPath + '\GlazeWM_x64_1.11.1')
 }
 # function Start-GlazeWM {
 # 	Start-Process $ToolPath + '\GlazeWM_x64_1.11.1'
