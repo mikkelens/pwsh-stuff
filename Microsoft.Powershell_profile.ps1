@@ -3,8 +3,8 @@ Set-Variable PSPath -Option Constant (Split-Path $PROFILE -Parent)
 # 'dot scoping' more stuff in
 . ($PSPath + '.\local_paths.ps1')
 . ($PSPath + '\rust_completions.ps1')
-
 Set-Variable OMPPath -Option Constant ($PSPath + '.\catppuccin_frappe.omp.json')
+
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 
 Set-Variable GlazeWMFolder -Option Constant -Value ($LocalUserPath + '\.glaze-wm')
@@ -12,7 +12,7 @@ function Open-CLIPath {
 	Start-Process $CLIPath
 }
 function Start-GlazeWM {
-	Start-Process ($ToolPath + '\GlazeWM_x64_1.11.1')
+	Start-Process ($ToolPath + '\GlazeWM_x64_2.0.3')
 }
 
 New-Alias bib Build-Install-Binary
