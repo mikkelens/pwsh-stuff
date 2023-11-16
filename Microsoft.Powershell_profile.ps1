@@ -1,10 +1,16 @@
+# directory for pwsh stuff
 Set-Variable PSPath -Option Constant (Split-Path $PROFILE -Parent)
 
-# 'dot scoping' more stuff in
-. ($PSPath + '.\local_paths.ps1')
-. ($PSPath + '\rust_completions.ps1')
+# more setup references
+Set-Variable LocalPath -Option Constant -Value ($PSPath + '.\local_paths.ps1')
+Set-Variable RustCompletionsPath -Option Constant -Value ($PSPath + '\rust_completions.ps1')
 Set-Variable OMPPath -Option Constant ($PSPath + '.\catppuccin_frappe.omp.json')
 
+# 'dot scoping' more stuff in
+. $LocalPath
+. $RustCompletionsPath
+
+# use local path to initialize oh-my-posh
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 
 Set-Variable GlazeWMFolder -Option Constant -Value ($LocalUserPath + '\.glaze-wm')
