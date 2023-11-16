@@ -1,5 +1,6 @@
 # directory for pwsh stuff
 Set-Variable PWSHPath -Option Constant (Split-Path $PROFILE -Parent)
+
 function Set-Location-PowerShell {
 	Set-Location $PWSHPath
 }
@@ -8,19 +9,33 @@ New-Alias cdpwsh Set-Location-PowerShell
 # more setup references
 Set-Variable LocalPaths -Option Constant -Value ($PWSHPath + '.\local_paths.ps1')
 Set-Variable RustCompletionsPath -Option Constant -Value ($PWSHPath + '\rust_completions.ps1')
-Set-Variable OMPPath -Option Constant ($PWSHPath + '.\catppuccin_frappe.omp.json')
 
 # 'dot scoping' more stuff in
 . $LocalPaths
 . $RustCompletionsPath
 
 # use local path to initialize oh-my-posh
+Set-Variable OMPPath -Option Constant ($PWSHPath + '.\catppuccin_frappe.omp.json')
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
+
+# cli
+function Set-Location-CLI {
+	Set-Location $CLIPath
+}
+New-Alias cdcli Set-Location-CLI
 
 function Open-CLIPath {
 	Start-Process $CLIPath $args
 }
+
+# glazewm
 Set-Variable GlazeWMFolder -Option Constant -Value ($LocalUserPath + '\.glaze-wm')
+function Set-Location-GlazeWM {
+	Set-Location $GlazeWMFolder
+}
+
+New-Alias cdglaze Set-Location-GlazeWM
+
 function Start-GlazeWM {
 	Start-Process ($ToolPath + '\GlazeWM_x64_2.0.3') $args
 }
