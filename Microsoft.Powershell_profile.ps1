@@ -1,24 +1,28 @@
 # directory for pwsh stuff
-Set-Variable PSPath -Option Constant (Split-Path $PROFILE -Parent)
+Set-Variable PWSHPath -Option Constant (Split-Path $PROFILE -Parent)
+function Set-Location-PowerShell {
+	Set-Location $PWSHPath
+}
+New-Alias cdpwsh Set-Location-PowerShell
 
 # more setup references
-Set-Variable LocalPath -Option Constant -Value ($PSPath + '.\local_paths.ps1')
-Set-Variable RustCompletionsPath -Option Constant -Value ($PSPath + '\rust_completions.ps1')
-Set-Variable OMPPath -Option Constant ($PSPath + '.\catppuccin_frappe.omp.json')
+Set-Variable LocalPaths -Option Constant -Value ($PWSHPath + '.\local_paths.ps1')
+Set-Variable RustCompletionsPath -Option Constant -Value ($PWSHPath + '\rust_completions.ps1')
+Set-Variable OMPPath -Option Constant ($PWSHPath + '.\catppuccin_frappe.omp.json')
 
 # 'dot scoping' more stuff in
-. $LocalPath
+. $LocalPaths
 . $RustCompletionsPath
 
 # use local path to initialize oh-my-posh
 oh-my-posh init pwsh --config $OMPPath | Invoke-Expression
 
-Set-Variable GlazeWMFolder -Option Constant -Value ($LocalUserPath + '\.glaze-wm')
 function Open-CLIPath {
-	Start-Process $CLIPath
+	Start-Process $CLIPath $args
 }
+Set-Variable GlazeWMFolder -Option Constant -Value ($LocalUserPath + '\.glaze-wm')
 function Start-GlazeWM {
-	Start-Process ($ToolPath + '\GlazeWM_x64_2.0.3')
+	Start-Process ($ToolPath + '\GlazeWM_x64_2.0.3') $args
 }
 
 New-Alias bib Build-Install-Binary
@@ -32,8 +36,9 @@ function Build-Install-Binary ($specifiedPath) {
 	cargo build --release
 	cargo install $path
 }
+
 function Start-Code-New {
-	code --new-window @args
+	code --new-window $args
 }
 function Start-Code-Bonus {
 	$name = (Get-Item -Path .).BaseName
@@ -71,7 +76,7 @@ function Start-Code-Bonus {
 }
 
 # docs
-function Open-RustBook { rustup docs --book }
+function Open-RustBook { rustup docs --book $args }
 New-Alias rustbook Open-RustBook
 
 # directories
@@ -88,12 +93,12 @@ New-Alias cdgit Set-Location-Git
 New-Alias cdg Set-Location-Git
 
 # cargo shorthands
-function Invoke-Cargo-Run { cargo run @args }
-function Invoke-Cargo-Run-Release { cargo run --release @args }
-function Invoke-Cargo-Build { cargo build }
-function Invoke-Cargo-Build-Release { cargo build --release @args }
-function Invoke-Cargo-Test { cargo test }
-function Invoke-Cargo-Test-Release { cargo test --release @args }
+function Invoke-Cargo-Run { cargo run $args }
+function Invoke-Cargo-Run-Release { cargo run --release $args }
+function Invoke-Cargo-Build { cargo build $args }
+function Invoke-Cargo-Build-Release { cargo build --release $args }
+function Invoke-Cargo-Test { cargo test $args }
+function Invoke-Cargo-Test-Release { cargo test --release $args }
 New-Alias cr Invoke-Cargo-Run
 New-Alias crr Invoke-Cargo-Run-Release
 New-Alias cb Invoke-Cargo-Build
@@ -103,27 +108,27 @@ New-Alias ctr Invoke-Cargo-Test-Release
 
 function Clear-Run { 
 	Clear-Host
-	Invoke-Cargo-Run @args
+	Invoke-Cargo-Run $args
 }
 function Clear-Run-Release { 
 	Clear-Host
-	Invoke-Cargo-Run-Release @args
+	Invoke-Cargo-Run-Release $args
 }
 function Clear-Build {
 	Clear-Host
-	Invoke-Cargo-Build @args
+	Invoke-Cargo-Build $args
 }
 function Clear-Build-Release {
 	Clear-Host
-	Invoke-Cargo-Build-Release @args
+	Invoke-Cargo-Build-Release $args
 }
 function Clear-Test {
 	Clear-Host
-	Invoke-Cargo-Test @args
+	Invoke-Cargo-Test $args
 }
 function Clear-Test-Release {
 	Clear-Host
-	Invoke-Cargo-Test-Release @args
+	Invoke-Cargo-Test-Release $args
 }
 New-Alias clr Clear-Run
 New-Alias clrr Clear-Run-Release
@@ -134,13 +139,57 @@ New-Alias cltr Clear-Test-Release
 
 Set-Variable ClippyConfig -Option Constant -Value '-Wclippy::pedantic', '-Aclippy::uninlined_format_args', '-Aclippy::wildcard_imports'
 function Fix_Clippy_With_Config {
-	cargo clippy --fix -- $ClippyConfig
+	cargo clippy --fix -- $ClippyConfig $args
 }
 function Use_Clippy_With_Config {
-	cargo clippy -- $ClippyConfig
+	cargo clippy -- $ClippyConfig $args
 }
 
 function Start-Powershell-Window {
 	Start-Process pwsh
 }
 New-Alias sps Start-Powershell-Window
+
+function Set-Location-NVim {
+	Set-Location $NVimPath
+}
+New-Alias cdnvim Set-Location-NVim
+
+
+# git aliases
+function Git-Pull {
+	git pull $args
+}
+New-Alias yoink Git-Pull
+
+function Git-Commit-All-Message {
+	git commit -a -m $args
+}
+New-Alias yell Git-Commit-All-Message
+
+function Git-Amend-Message {
+	git commit --amend -m $args
+}
+New-Alias rephrase Git-Amend-Message
+
+function Git-Push {
+	git push $args
+}
+New-Alias yeet Git-Push
+
+function Git-Revert {
+	git revert $args
+}
+New-Alias unyeet Git-Revert # revert latest commit by making a new commit that undoes changes
+
+function Git-Checkout {
+	git checkout -- $args
+}
+New-Alias unfuck-and-reset Git-Checkout # resets file to state at commit
+
+
+# shell commands
+function which($name) {
+    Get-Command $name | Select-Object -ExpandProperty Definition
+}
+
